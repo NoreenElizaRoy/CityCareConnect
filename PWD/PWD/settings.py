@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'User',
+    'Complaints',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -38,9 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'User.apps.UserConfig',
-    'Complaints.apps.ComplaintsConfig'
-    
 ]
 
 MIDDLEWARE = [
@@ -113,6 +112,11 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+AUTH_USER_MODEL = 'User.Official'
+
+CORS_ORIGIN_ALLOW_ALL= True
+CORS_ALLOW_CREDENTIALS = True
 
 
 # Internationalization
