@@ -40,12 +40,10 @@ class Official(AbstractBaseUser):
     date_joined = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now_add=True)
     created_date = models.DateTimeField(auto_now_add=True)
-    is_staff = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=True)
     is_active = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=True)
-
-
     # Specify the custom manager for the User model
     objects = UserManager()
 
@@ -60,3 +58,28 @@ class Official(AbstractBaseUser):
 
     def __str__(self):
         return self.username
+    
+class CustomUser(AbstractBaseUser):
+    user_id = models.BigAutoField(primary_key=True)
+    user_name = models.CharField(max_length=50)
+    phone_number = models.CharField(max_length=15,blank=True)
+    email = models.EmailField(max_length=254,unique=True)
+    date_joined = models.DateTimeField(auto_now_add=True) 
+    created_date = models.DateTimeField(auto_now_add=True)    
+    is_active = models.BooleanField(default=True)
+    
+
+    objects = UserManager()
+
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["user_name"]
+
+    def has_module_perms(self, app_label):       
+       return self.is_superuser
+
+    def has_perm(self, perm, obj=None):
+        return self.is_superuser
+
+    def __str__(self):
+        return self.username     
+    
