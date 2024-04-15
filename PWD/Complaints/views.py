@@ -32,7 +32,7 @@ class ComplaintView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    #view complaints
+    #view complaints USER
     def get(self,request):
         jwt_token = request.COOKIES.get('jwt')
         if not jwt_token:
@@ -90,5 +90,18 @@ class ComplaintEdit(APIView):
         complaint = get_object_or_404(Complaint, pk=complaint_id)
         complaint.delete()
         return Response({"message":"Complaint deleted sucessfully"},status=status.HTTP_204_NO_CONTENT)
-        
+
+class TrackComplaint(APIView):
+    def get(self,request,complaint_id):
+        try:
+            complaint=Complaint.objects.get(complaint_id=complaint_id)
+        except Complaint.DoesNotExist:
+            raise NotFound("Complaint not found")
+        serializer = ComplaintSerializer(complaint)
+        data = {
+            #'complaint':serializer.data,
+            'status':complaint.status
+        }   
+        return Response(data)
+
         
